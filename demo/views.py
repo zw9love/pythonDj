@@ -1,3 +1,5 @@
+import mysql.connector
+
 from rest_framework.decorators import api_view, action
 from rest_framework.response import Response
 from django.http import HttpResponseRedirect
@@ -6,6 +8,9 @@ from django.db import models
 from django.contrib.auth.models import User
 
 from django.shortcuts import render
+
+
+
 
 # 如果登录成功，设置session
 def login(request):
@@ -57,8 +62,13 @@ def getData(request):
     """
        GET请求获取数据.
     """
+
+    token = request.META.get('TOKEN')
     print('request.methods', request.method)
-    return Response({'data': '', 'message': request.query_params, 'code': 200})
+    print('request.META', token)
+    params = request.query_params
+    params.token = token
+    return Response({'data': '', 'message': params, 'code': 200})
 
 @api_view(['POST'])
 def postData(request):
@@ -70,7 +80,24 @@ def postData(request):
        POST请求获取数据.
     """
     print(request.data)
-    return Response({'data': '', 'message': request.data, 'code': 200})
+
+    mydb = mysql.connector.connect(
+        host="localhost",
+        user="root",
+        passwd="159357",
+        database="test",
+    )
+
+    mycursor = mydb.cursor(dictionary=True)
+
+    mycursor.execute("select  * from user")
+    myresult = mycursor.fetchall()
+    # # print myresult
+    # for x in myresult:
+    #     print(x['id'])
+
+    mycursor.close()
+    return Response({'data': '', 'message': myresult, 'code': 200})
 
 
 
