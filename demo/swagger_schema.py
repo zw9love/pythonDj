@@ -81,7 +81,6 @@ class SwaggerSchemaView(APIView):
         renderers.OpenAPIRenderer,
         renderers.SwaggerUIRenderer
     ]
-
     def get(self, request):
 
         # Use Custom schema generator to generate schema

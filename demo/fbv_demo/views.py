@@ -3,6 +3,8 @@ from rest_framework.response import Response
 from .models import Medical
 from rest_framework import status
 import mysql.connector
+import coreapi
+
 
 @api_view(['POST'])
 def save_medical(request):
@@ -23,10 +25,11 @@ def save_medical(request):
         required: true
         location: form
     """
+
     name = request.POST.get('name')
     bloodgroup = request.POST.get('bloodgroup')
     birthmark = request.POST.get('birthmark')
-
+    #
     # try:
     #     Medical.objects.create(name= name, bloodgroup = bloodgroup, birthmark = birthmark)
     #     return Response("Data Saved!", status=status.HTTP_201_CREATED)
